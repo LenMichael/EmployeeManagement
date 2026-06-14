@@ -1,9 +1,8 @@
 ﻿using FluentValidation;
-using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.IdentityModel.Tokens;
-using System.ComponentModel.DataAnnotations;
+using FluentValidationFailure = FluentValidation.Results.ValidationFailure;
+using FluentValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace EmployeeManagement.Api.Filters;
 
@@ -13,7 +12,7 @@ public class FluentValidationFilter : IAsyncActionFilter
         ActionExecutingContext context,
         ActionExecutionDelegate next)
     {
-        var validationFailures = new List<ValidationFailure>();
+        var validationFailures = new List<FluentValidationFailure>();
 
         foreach (object? argument in context.ActionArguments.Values)
         {
@@ -32,7 +31,7 @@ public class FluentValidationFilter : IAsyncActionFilter
 
             var validationContext = new ValidationContext<object>(argument);
 
-            ValidationResult validationResult = await validator.ValidateAsync(
+            FluentValidationResult validationResult = await validator.ValidateAsync(
                 validationContext,
                 context.HttpContext.RequestAborted);
 
