@@ -1,6 +1,9 @@
 using EmployeeManagement.Api.Data;
 using EmployeeManagement.Api.Middleware;
 using EmployeeManagement.Api.Filters;
+using EmployeeManagement.Api.Services.Departments;
+using EmployeeManagement.Api.Services.Employees;
+using EmployeeManagement.Api.Services.Projects;
 using EmployeeManagement.Api.Validators.Employees;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +11,9 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<FluentValidationFilter>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
 
 builder.Services.AddControllers(options =>
 {
